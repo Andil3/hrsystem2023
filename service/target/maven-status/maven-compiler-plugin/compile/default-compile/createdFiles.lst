@@ -1,0 +1,6 @@
+com\andile\hrsystem\service\UserRoleService.class
+com\andile\hrsystem\service\UserServiceLocal.class
+com\andile\hrsystem\service\EmployeeServiceLocal.class
+com\andile\hrsystem\service\UserRoleServiceLocal.class
+com\andile\hrsystem\service\UserService.class
+com\andile\hrsystem\service\EmployeeService.class

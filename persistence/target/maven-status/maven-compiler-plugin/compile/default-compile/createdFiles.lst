@@ -1,0 +1,5 @@
+com\andile\hrsystem\persistence\DataSourceConfiguration.class
+com\andile\hrsystem\persistence\UserRepository.class
+com\andile\hrsystem\persistence\UserRoleRepository.class
+com\andile\hrsystem\persistence\EmployeeRepository.class
+com\andile\hrsystem\persistence\TestDataSourceConfiguration.class

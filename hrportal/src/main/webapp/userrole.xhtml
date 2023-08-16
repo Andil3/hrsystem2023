@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="maincontent">
+                <b:panel rendered="#{userRoleBean.list}" look="default"  collapsible="false">
+                    <f:facet name="heading">
+                        <b:panelGrid colSpans="12" size="md" styleClass="ui-fluid">
+                            <p:outputLabel value="#{userRoleBean.panelTitle}" styleClass="panel-title-css"/>
+                            <p:separator/>
+                        </b:panelGrid>
+                    </f:facet>
+                    <p:dataTable value="#{userRoleBean.userRoles}" var="userRole" paginator="true" paginatorAlwaysVisible="false" reflow="true" rows="10">
+                        <f:facet name="header">
+                            <p:toolbar>
+                                <f:facet name="left">
+                                    <b:commandButton iconSize="lg" iconAwesome="fa-plus" look="primary" value="Add" disabled="#{not userRoleBean.activeUser.userRole.userPermission.add}" action="#{userRoleBean.addOrUpdate(null)}" update="@form"/>
+                                </f:facet>
+                            </p:toolbar>
+                        </f:facet>
+                        <p:column headerText="Added Date">
+                            <h:outputText value="#{userRole.createdDate}">
+                                <f:convertDateTime pattern="dd MMM yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Role">
+                            <h:outputText value="#{userRole.description}"/>
+                        </p:column>
+                        <p:column headerText="Action" styleClass="large">
+                            <b:commandButton disabled="#{not userRoleBean.activeUser.userRole.userPermission.update}" look="primary" size="xs" value="Edit" icon-size="xs" iconBrand="5.2.0" iconAwesome="fa-pencil"  action="#{userRoleBean.addOrUpdate(userRole)}" update="@form"/>
+                            <p:spacer width="5px"/>
+                            <b:commandButton disabled="#{not userRoleBean.activeUser.userRole.userPermission.delete}" look="danger" size="xs" value="Delete" icon-size="xs" iconBrand="5.2.0" iconAwesome="fa-remove" action="#{userRoleBean.delete(userRole)}" update="@form"/>
+                        </p:column>
+                    </p:dataTable>
+                </b:panel>
+                <b:panel rendered="#{userRoleBean.add}" look="default" collapsible="false">
+                    <f:facet name="heading">
+                        <p:outputLabel value="#{userRoleBean.panelTitle}" styleClass="panel-title-css"/>
+                    </f:facet>
+                    <b:panelGrid colSpans="12" size="md" styleClass="ui-fluid">
+                        <b:panelGrid colSpans="12" size="md" styleClass="ui-fluid">
+                            <b:formGroup>
+                                <p:outputLabel value="Role Description"/>
+                                <b:inputText value="#{userRoleBean.entity.description}"/>
+                            </b:formGroup> 
+                        </b:panelGrid>
+                    </b:panelGrid>
+                    <b:panelGrid colSpans="6,6" size="md" styleClass="ui-fluid">
+                        <p:fieldset legend="Administration Settings">
+                            <b:panelGrid colSpans="12" size="md" styleClass="ui-fluid" >
+                                <p:selectBooleanCheckbox itemLabel="User Role" value="#{userRoleBean.entity.administrationSettings.userRole}"/>
+                                <p:selectBooleanCheckbox itemLabel="User" value="#{userRoleBean.entity.administrationSettings.users}"/>
+                                <p:selectBooleanCheckbox itemLabel="Employee" value="#{userRoleBean.entity.administrationSettings.employee}"/>
+                            </b:panelGrid>
+                        </p:fieldset>
+                       
+                        <p:fieldset legend="Permission">
+                            <b:panelGrid colSpans="12" size="md" styleClass="ui-fluid">
+                                <p:selectBooleanCheckbox itemLabel="Search" value="#{userRoleBean.entity.userPermission.search}"/>
+                                <p:selectBooleanCheckbox itemLabel="Read" value="#{userRoleBean.entity.userPermission.view}"/>
+                                <p:selectBooleanCheckbox itemLabel="update" value="#{userRoleBean.entity.userPermission.update}"/>
+                                <p:selectBooleanCheckbox itemLabel="Delete" value="#{userRoleBean.entity.userPermission.delete}"/>
+                                <p:selectBooleanCheckbox itemLabel="Add" value="#{userRoleBean.entity.userPermission.add}"/>
+                                <p:selectBooleanCheckbox itemLabel="Print" value="#{userRoleBean.entity.userPermission.print}"/>                                
+                            </b:panelGrid>
+                        </p:fieldset>
+                    </b:panelGrid>
+                    <f:facet name="footer">
+                        <b:row>
+                            <b:panelGrid colSpans="6,6" size="md" styleClass="ui-fluid">
+                                <b:commandButton large-screen="full-width" size="md" value="Save" look="success" action="#{userRoleBean.save(userRoleBean.entity)}" update="@form" />
+                                <b:commandButton large-screen="full-width" size="md" value="Cancel" look="danger" action="#{userRoleBean.cancel(userRoleBean.entity)}" immediate="true" update="@form"/>
+                            </b:panelGrid>
+                        </b:row>
+                    </f:facet>
+                </b:panel>  
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

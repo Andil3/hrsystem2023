@@ -1,0 +1,8 @@
+com\andile\hrsystem\domain\Address.class
+com\andile\hrsystem\domain\ContactDetails.class
+com\andile\hrsystem\domain\UserRole.class
+com\andile\hrsystem\domain\User.class
+com\andile\hrsystem\domain\Employee.class
+com\andile\hrsystem\domain\BaseEntity.class
+com\andile\hrsystem\domain\UserPermission.class
+com\andile\hrsystem\domain\AdminSettings.class

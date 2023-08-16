@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="maincontent">
+                <b:panel rendered="#{employeeBean.list}" look="default"  collapsible="false">
+                    <f:facet name="heading">
+                        <b:panelGrid colSpans="12" size="md" styleClass="ui-fluid">
+                            <p:outputLabel value="#{employeeBean.templateTitle}" styleClass="panel-title-css"/>
+                            <p:separator/>
+                        </b:panelGrid>
+                    </f:facet>
+                    <p:dataTable value="#{employeeBean.employees}" var="emp" paginator="true" paginatorPosition="top" paginatorAlwaysVisible="false" reflow="true" rows="10">
+                        <f:facet name="header">
+                            <p:toolbar>
+                                <f:facet name="left">
+                                    <b:commandButton  iconSize="lg" iconAwesome="fa-plus" look="primary" disabled="#{not userRoleBean.activeUser.userRole.userPermission.add}" value="Add" action="#{employeeBean.addOrUpdate(null)}" update="@form"/>
+                                </f:facet>
+                            </p:toolbar>
+                        </f:facet>
+                        <p:column style="width:35px">
+                            <p:rowToggler />
+                        </p:column>
+                        <p:column headerText="First Name">
+                            <h:outputFormat value="{0}">
+                                <f:param value="#{emp.firstName}"/>
+                            </h:outputFormat>
+                        </p:column>
+                        <p:column headerText="Last Name">
+                            <h:outputFormat value="{0}">
+                                <f:param value="#{emp.lastName}"/>
+                            </h:outputFormat>
+                        </p:column>
+                        <p:column headerText="Employee ID" >
+                            <h:outputText value="#{emp.empID}"/>
+                        </p:column>
+                        <p:column headerText="Employee ID"  sortBy="#{emp.createdDate}">
+                            <h:outputText value="#{emp.createdDate}">
+                                <f:convertDateTime pattern="dd MMMM yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:rowExpansion>
+                            <b:panelGrid col-spans="6,6" size="md" style-class="ui-fluid">
+                                <p:dataGrid  value="#{emp.addresses}" var="address" columns="2">
+                                    <b:panelGrid col-spans="12" size="md" style-class="ui-fluid">
+                                        <p:fieldset legend="#{address.addressType.toString()}">
+                                            <b:panelGrid col-spans="6,6" size="md" style-class="ui-fluid">
+                                                <p:column  styleClass="small">
+                                                    <h:outputText  value="#{address.addressLine1}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText  value="#{address.addressLine2}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{address.area}"/>
+                                                </p:column>
+                                                <p:column >
+                                                    <h:outputText value="#{address.code}"/>
+                                                </p:column>
+                                            </b:panelGrid>
+                                        </p:fieldset>
+                                    </b:panelGrid>
+                                </p:dataGrid>
+                                <p:dataGrid value="#{emp.contactDetailses}" var="contact" columns="1">
+                                    <b:panelGrid col-spans="12" size="md" style-class="ui-fluid">
+                                        <p:fieldset legend="Contact Details" >
+                                            <b:panelGrid col-spans="6,6" size="md" style-class="ui-fluid">
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                                    <h:outputText value="#{contact.emailAddress}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                                    <h:outputText value="#{contact.landLine}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                                    <h:outputText value="#{contact.mobileNumber}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                                                    <h:outputText value="#{contact.twitterHandle}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                                                    <h:outputText value="#{contact.facebookHandle}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-linkedin"></i></span>
+                                                    <h:outputText value="#{contact.linkedIn}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                                                    <h:outputText value="#{contact.instagram}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <span class="input-group-addon"><i class="fa fa-whatsapp"></i></span>
+                                                    <h:outputText value="#{contact.whatsapp}"/>
+                                                </p:column>
+                                            </b:panelGrid>
+                                        </p:fieldset>
+
+                                    </b:panelGrid>
+                                </p:dataGrid>
+                            </b:panelGrid>
+                        </p:rowExpansion>
+                        <p:column headerText="Action" styleClass="large">
+                            <b:commandButton  look="primary" value="Edit" disabled="#{not userRoleBean.activeUser.userRole.userPermission.update}"  size="xs" icon-size="xs" iconBrand="5.2.0" icon-awesome="fa-pencil" action="#{employeeBean.addOrUpdate(emp)}" update="@form"/>
+                            <p:spacer width="5px"/>
+                            <b:commandButton  look="danger" value="Delete" disabled="#{not userRoleBean.activeUser.userRole.userPermission.delete}" size="xs" icon-size="xs" iconBrand="5.2.0" icon-awesome="fa-remove" action="#{employeeBean.delete(emp)}" update="@form"/>
+                        </p:column>
+                    </p:dataTable>
+                </b:panel>
+                <b:panel rendered="#{employeeBean.add}" look="default" collapsible="false">
+                    <f:facet name="heading">
+                        <p:outputLabel value="#{employeeBean.templateTitle}" styleClass="panel-title-css"/>
+                    </f:facet>
+                    <b:panelGrid colSpans="4,4,4" size="md" style-class="ui-fluid"> 
+                        <b:formGroup>
+                            <p:outputLabel value="First Name"/>
+                            <b:inputText value="#{employeeBean.entity.firstName}" required="true" requiredMessage="Please enter your Employee First Name" field-size="md"/>
+                        </b:formGroup>
+                        <b:formGroup>
+                            <p:outputLabel value="Last Name"/>
+                            <b:inputText value="#{employeeBean.entity.lastName}" required="true" requiredMessage="Please enter your Employee LastName" field-size="md"/>
+                        </b:formGroup>
+                        <b:formGroup>
+                            <p:outputLabel value="Employee ID"/>
+                            <b:inputText maxlength="9" value="#{employeeBean.entity.empID}" required="true" requiredMessage="Please enter your Employee ID" field-size="md"/>
+                        </b:formGroup>
+
+                    </b:panelGrid>
+                    <p:dataGrid value="#{employeeBean.entity.addresses}" var="address" columns="2">
+                        <b:panelGrid col-spans="12" size="md" style-class="ui-fluid">
+                            <p:fieldset legend="#{address.addressType.toString()}">
+                                <b:inputText value="#{address.addressLine1}" label="Address Line 1" field-size="md"/>
+                                <b:inputText value="#{address.addressLine2}" label="Address Line 2" field-size="md" readonly="#{addressType eq 'POSTAL'}" />
+                                <b:inputText value="#{address.area}" label="Area" field-size="md"/>
+                                <b:inputText value="#{address.code}" label="Code" maxlength="4" field-size="md"/>
+                            </p:fieldset>
+                        </b:panelGrid>
+                    </p:dataGrid>
+                    <script>
+    //<![CDATA[
+      var myGeoIpLookup = function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "";
+          success(countryCode);
+        });
+      };
+    //]]>
+    </script>
+                    <p:dataGrid value="#{employeeBean.entity.contactDetailses}" var="contact" columns="2">
+                        <b:panelGrid col-spans="12" size="md" style-class="ui-fluid">
+                            <p:fieldset legend="Contact Details" >
+                                <b:panelGrid col-spans="6,6" size="md" style-class="ui-fluid">
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                        <b:inputText value="#{contact.emailAddress}" placeholder="Email address" field-size="md" requiredMessage="Please enter your email address."
+                                                     validatorMessage="Invalid email format">
+                                            <f:validateRegex
+                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </b:inputText>
+                                    </b:formGroup>
+                                    
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                       
+                                        <pe:inputPhone value="#{contact.landLine}" id="txtPhone" 
+                                                       initialCountry="auto"
+                                                       geoIpLookup="myGeoIpLookup"
+                                                       style="width: 650px;"
+                                                       validatorMessage="Invalid Telephone format">
+                                            
+                                        </pe:inputPhone>
+                                    </b:formGroup>
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                        <b:inputText maxlength="10" value="#{contact.mobileNumber}" placeholder="Mobile number" required="true" requiredMessage="Please enter your Employee mobile number" field-size="md"/>
+                                    </b:formGroup>
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                                        <b:inputText value="#{contact.twitterHandle}" placeholder="Twitter handle" field-size="md"/>
+                                    </b:formGroup>
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                                        <b:inputText value="#{contact.facebookHandle}" placeholder="Facebook handle"  field-size="md"/>
+                                    </b:formGroup>
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-linkedin"></i></span>
+                                        <b:inputText value="#{contact.linkedIn}" placeholder="LinkedIn username" field-size="md"/>
+                                    </b:formGroup>
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                                        <b:inputText value="#{contact.instagram}" placeholder="Instagram handle" field-size="md"/>
+                                    </b:formGroup>
+                                    <b:formGroup class="input-group margin-bottom-md">
+                                        <span class="input-group-addon"><i class="fa fa-whatsapp"></i></span>
+                                        <b:inputText value="#{contact.whatsapp}" placeholder="Whatsapp number" field-size="md"/>
+                                    </b:formGroup>
+                                </b:panelGrid>
+                            </p:fieldset>
+
+                        </b:panelGrid>
+                    </p:dataGrid>
+                    <f:facet name="footer">
+                        <b:row>
+                            <b:panelGrid colSpans="6,6" size="md" styleClass="ui-fluid">
+                                <b:commandButton large-screen="full-width" size="md" value="Save" look="success" action="#{employeeBean.save(employeeBean.entity)}" update="@form" />
+                                <b:commandButton large-screen="full-width" size="md" value="Cancel" look="danger" action="#{employeeBean.cancel(employeeBean.entity)}" immediate="true" update="@form" />
+                            </b:panelGrid>
+                        </b:row>
+                    </f:facet>
+                </b:panel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
